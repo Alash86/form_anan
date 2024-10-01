@@ -1,7 +1,7 @@
 function Checkbox({ label, error, ...rest }) {
     return (
-        <div className="mb-1 p-3">
-            <div className="form-check p-3 m-1">
+        <div className="mb-1 ">
+            <div className="form-check p-1 m-1">
                 <input
                     {...rest}
                     type="checkbox"
@@ -14,7 +14,7 @@ function Checkbox({ label, error, ...rest }) {
                     {label}
                     {rest.required && <span className="text-danger ms-1">*</span>}
                 </label>
-                <div >
+                <div className="fs-6" >
                     מאשר שבמידה ואבטל פחות מ 24 שעות ממועד הטיפול אחוייב בדמי ביטול</div>
             </div>
         </div>

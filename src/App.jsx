@@ -9,6 +9,7 @@ import Select from './assets/components/select'
 import SignatureCanvas from 'react-signature-canvas';
 import { useRef } from 'react'
 import InputTwo from './assets/components/inputTwo'
+import Logo from './assets/components/logo'
 
 function App({ text, onOK }) {
   const sigCanvas = useRef(null);
@@ -83,12 +84,9 @@ function App({ text, onOK }) {
 
   return (
     <div className='container shadow p-3  bg-body-tertiary rounded mt-5 mb-5'>
-      <div className='text-box'>  <h3 className=''>טופס אישור ביצוע טיפולי המשך</h3>
-        <span className='text-danger '>טופס זה מויעד עבור טיפולי המשך בלבד. אין להשתמש בטופס זה עבור אינטק
-
-          בתום מילוי הטופס אנא וודא כי הוא נשלח. במידה ונתקלת בבעיה, צלם את המסך ושלח במייל אל
-
-          physiotnoa.info@gmail.com
+      <Logo />
+      <div className='container  text-box m-0'>  <h3 className=''>טופס אישור ביצוע טיפולי המשך</h3>
+        <span className='text-danger '>טופס החתמה זה נועד עבור המשך טיפולים. יש למלא את הטופס ולהחתים את המטופל מייד לאחר סיום הטיפול. במידה ונתקלת בבעיה בשליחת הטופס נא לצלם מסך ולהעביר ל sharkia90@gmail.com
 
         </span>
       </div>
@@ -149,12 +147,15 @@ function App({ text, onOK }) {
           label="שם החותם"
           required
         />
-        <Input
+        <label className="form-label fs-6 fw-bold ">
+          מהות הטיפול
+          <span className="text-danger ms-1">*</span>
+        </label>
+        <div className="form-floating">
 
-          type="text"
-          label="מהות הטיפול"
-          required
-        />
+          <textarea style={{ height: 150 }} className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+          <label htmlFor="floatingTextarea"></label>
+        </div>
         <InputTwo
           label="חתימה"
           required

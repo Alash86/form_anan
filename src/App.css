@@ -16,5 +16,17 @@
 }
 
 .text-box {
-    width: 80%;
+    padding-right: 30px !important;
+
+    word-wrap: break-word;
+    max-width: 85vw !important;
+
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+.image {
+    justify-content: center !important;
 }
