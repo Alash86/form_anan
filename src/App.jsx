@@ -149,6 +149,12 @@ function App({ text, onOK }) {
           label="שם החותם"
           required
         />
+        <Input
+
+          type="text"
+          label="מהות הטיפול"
+          required
+        />
         <InputTwo
           label="חתימה"
           required
@@ -169,7 +175,9 @@ function App({ text, onOK }) {
           <option value="">במעקב</option>
 
         </Select>
-        <Input type="time">
+        <Input label="מועד הטיפול הבא" type="date">
+        </Input>
+        <Input label="שעת הטיפול הבא" type="time">
         </Input>
         <Input label="הערות" type="textarea">
         </Input>
