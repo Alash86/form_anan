@@ -10,6 +10,8 @@ import SignatureCanvas from 'react-signature-canvas';
 import { useRef } from 'react'
 import InputTwo from './assets/components/inputTwo'
 import Logo from './assets/components/logo'
+import Textarea from './assets/components/textarea'
+import Selectcontinue from './assets/components/selectContinue'
 
 function App({ text, onOK }) {
   const sigCanvas = useRef(null);
@@ -22,12 +24,8 @@ function App({ text, onOK }) {
   const clearSignature = () => {
     sigCanvas.current.clear();
   };
-  const [date, setDate] = useState('');
 
-  useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setDate(today);
-  }, []);
+
 
 
 
@@ -35,52 +33,35 @@ function App({ text, onOK }) {
   const form = useFormik({
     validateOnMount: true,
     initialValues: {
+      date: new Date().toISOString().split('T')[0],
       name: {
         first: "",
-        middle: "",
         last: "",
       },
-      phone: "",
-      email: "",
-      password: "",
-      image: {
-        url: "",
-        alt: "",
-      },
-      address: {
-        state: "",
-        country: "",
-        city: "",
-        street: "",
-        houseNumber: "",
-        zip: "",
-      },
-      isBusiness: false,
+      continue: "כן ממשיך",
+      debit: "מאשר בזאת חיוב אשראי",
+      fullname: "",
+      textarea: "",
+      signature: "",
+      dateNext: "",
+      time: "",
+      notes: "",
+      physioName: "",
+      isAgree: false,
     },
     validate(values) {
-      const { error } = schema.validate(values, { abortEarly: false });
-      if (!error) {
-        return null;
-      }
 
-      const errors = {};
-      for (const detail of error.details) {
-        const key = detail.path.join(".");
-        errors[key] = detail.message;
-      }
-      return errors;
+      return null;
     },
+
+
     async onSubmit(values) {
-      try {
-        await signUp({ ...values });
-        navigate("/sign-in");
-      } catch (err) {
-        if (err.response?.status === 400) {
-          setServerError(err.response.data);
-        }
-      }
-    },
+      values.signature = signature;
+      console.log("Form is submitting");
+      console.log(values);
+    }
   });
+
 
   return (
     <div className='container shadow p-3  bg-body-tertiary rounded mt-5 mb-5'>
@@ -101,17 +82,19 @@ function App({ text, onOK }) {
         )}
 
         <Input
-          {...form.getFieldProps("name.first")}
+          {...form.getFieldProps("date")}
           type="date"
           label="תאריך טיפול"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={form.values.date}
+          onChange={form.handleChange}
           required
         />
         <Input
-          {...form.getFieldProps("name.middle")}
+          {...form.getFieldProps("name.first")}
           type="text"
           label="שם פרטי"
+          value={form.values.name?.first}
+          onChange={form.handleChange}
           placeholder="שם פרטי"
           required
 
@@ -120,14 +103,18 @@ function App({ text, onOK }) {
           {...form.getFieldProps("name.last")}
           type="text"
           label="שם משפחה"
+          value={form.values.name?.last}
+          onChange={form.handleChange}
           placeholder="שם משפחה"
           required
 
         />
 
         <Select
-
+          {...form.getFieldProps("debit")}
           type="select"
+          value={form.values.debit}
+          onChange={form.handleChange}
           label="חיוב"
           placeholder='מאשר בזאת חיוב אשראי'
           required
@@ -135,56 +122,81 @@ function App({ text, onOK }) {
           <option value="מאשר בזאת חיוב אשראי">מאשר בזאת חיוב אשראי</option>
         </Select>
         <Checkbox
+          {...form.getFieldProps("isAgree")}
+          value={form.values.isAgree}
+          onChange={form.handleChange}
           required
-          {...form.getFieldProps("isBusiness")}
           type="checkbox"
           label="מדיניות ביטולים"
 
         />
         <Input
-
+          {...form.getFieldProps("fullname")}
+          value={form.values.fullname}
+          onChange={form.handleChange}
           type="text"
           label="שם החותם"
           required
         />
-        <label className="form-label fs-6 fw-bold ">
-          מהות הטיפול
-          <span className="text-danger ms-1">*</span>
-        </label>
-        <div className="form-floating">
+        <Textarea
+          {...form.getFieldProps("textarea")}
+          value={form.values.textarea}
+          onChange={form.handleChange}
+          label="מהות הטיפול"
+          type="textarea"
+          required
+        />
 
-          <textarea style={{ height: 150 }} className="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-          <label htmlFor="floatingTextarea"></label>
-        </div>
         <InputTwo
           label="חתימה"
           required
+          value={form.values.textarea}
+          onChange={form.handleChange}
         />
 
 
 
 
 
-        <SignatureCanvas className="container" ref={sigCanvas} penColor='black' canvasProps={{ className: 'sigCanvas' }} />
+        <SignatureCanvas
+          {...form.getFieldProps("signature")}
+          className="container" ref={sigCanvas} penColor='black' canvasProps={{ className: 'sigCanvas' }} />
         <button type="button" className='btn btn-secondary m-2' onClick={clearSignature}>Clear</button>
         <button type="button" className='btn btn-secondary' onClick={saveSignature}>Save</button>
 
-        <Select label="האם ממשיך טיפולים"
-        >
-          <option value="">כן ממשיך</option>
-          <option value="">סיים</option>
-          <option value="">במעקב</option>
+        <Selectcontinue
+          {...form.getFieldProps("continue")}
+          label="האם ממשיך טיפולים"
 
-        </Select>
-        <Input label="מועד הטיפול הבא" type="date">
+          required
+          value={form.values.textarea}
+          onChange={form.handleChange}
+        />
+
+
+
+        <Input
+          {...form.getFieldProps("dateNext")}
+          label="מועד הטיפול הבא" type="date"
+
+          value={form.values.dateNext}
+          onChange={form.handleChange}>
         </Input>
-        <Input label="שעת הטיפול הבא" type="time">
+        <Input
+          {...form.getFieldProps("time")}
+          label="שעת הטיפול הבא" type="time" value={form.values.time}
+          onChange={form.handleChange}>
         </Input>
-        <Input label="הערות" type="textarea">
+        <Input
+          {...form.getFieldProps("notes")}
+          label="הערות" type="textarea" value={form.values.notes}
+          onChange={form.handleChange}>
         </Input>
 
         <Input
-
+          {...form.getFieldProps("physioName")}
+          value={form.values.physioName}
+          onChange={form.handleChange}
           type="text"
           label="שם הפיזיותרפיסט"
           required
