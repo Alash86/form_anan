@@ -55,8 +55,14 @@ function App() {
       isAgree: false,
     },
     validate: (values) => {
-      // Validation logic (if needed)
-      return null;
+      const errors = {};
+
+      // Check if the signature is empty
+      if (!signature) {
+        errors.signature = 'Signature is required';
+      }
+
+      return errors;
     },
     onSubmit: async (values) => {
       values.signature = signature; // Add the signature URL to values
@@ -117,7 +123,7 @@ function App() {
         <Input {...form.getFieldProps("physioName")} label="שם הפיזיותרפיסט" required />
 
         <div className="my-2 p-3 mt-3">
-          <button type="submit" className="btn btn-secondary fs-6">שליחה</button>
+          <button type="submit" className="btn btn-secondary fs-6" disabled={!signature}>שליחה</button>
         </div>
       </form>
     </div>
